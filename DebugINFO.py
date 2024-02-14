@@ -13,12 +13,13 @@ def get_process_info(pid):
     threads = p.num_threads()
     OPENFILES = p.open_files()
     status = p.status()
-    return memory_info, gpu_memory, memory_addr, memfullinfo, connections, io_counters, threads, OPENFILES, status
+    terminal = p.terminal()
+    return memory_info, gpu_memory, memory_addr, memfullinfo, connections, io_counters, threads, OPENFILES, status, terminal
 
 def monitor_process(pid):
     try:
         while True:
-            memory_info, gpu_memory, memory_addr, memfullinfo, connections, io_counters,threads, OPENFILES, status = get_process_info(pid)
+            memory_info, gpu_memory, memory_addr, memfullinfo, connections, io_counters,threads, OPENFILES, status, terminal = get_process_info(pid)
             print(f"Process memory: {memory_info.rss} bytes")
             print(f"GPU memory: {gpu_memory} bytes")
             print(f"Memory address: {memory_addr}")
@@ -31,6 +32,7 @@ def monitor_process(pid):
             print(f"io counters: {io_counters}")
             print(f"opened files: {OPENFILES}")
             print(f"threads: {threads}")
+            print(f"terminal: {terminal}")
 
             time.sleep(1)
             os.system('clear')
